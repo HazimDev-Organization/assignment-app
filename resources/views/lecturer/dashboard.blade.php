@@ -3,12 +3,13 @@
             <div class="content">
                     <div class="container-fluid">
                         <div class="row">
-                            <!-- User Details Card now comes first and takes up 4 columns -->
+                            <!-- User Details Card now comes first and takes up 4 columns try commit-->
                             <div class="col-md-4">
                                 <div class="card card-user">
                                     <div class="card-image">
                                         <img src="{{ asset('/img/background-card.jpg') }}" alt="Background Image">
                                     </div>
+                                    
                                     <div class="card-body">
                                         <div class="author">
                                             <a href="#">
