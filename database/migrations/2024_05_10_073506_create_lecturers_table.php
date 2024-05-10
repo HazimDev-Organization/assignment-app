@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lecturers', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->string('id')->primary();
+            $table->string('email')->unique();
+            $table->string('name');
+            $table->string('role');
+            $table->foreignId('faculty_id')->constrained()->onDelete('cascade');
+            $table->string('profile_pic')->nullable();
         });
     }
 
