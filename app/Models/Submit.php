@@ -7,5 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Submit extends Model
 {
-    use HasFactory;
-}
+    protected $fillable = ['assignmentSubmission_file', 'marks'];
+
+    public function assignment()
+    {
+        return $this->belongsTo(Assignment::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }}

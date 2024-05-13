@@ -7,5 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Learn extends Model
 {
-    use HasFactory;
-}
+    protected $fillable = [];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }}

@@ -7,5 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Faculty extends Model
 {
-    use HasFactory;
-}
+    protected $fillable = ['name'];
+
+    public function lecturers()
+    {
+        return $this->hasMany(Lecturer::class);
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }}

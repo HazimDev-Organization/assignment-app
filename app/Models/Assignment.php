@@ -7,5 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Assignment extends Model
 {
-    use HasFactory;
-}
+    protected $fillable = ['title', 'dateline', 'status', 'assignmentDetails_file'];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function lecturer()
+    {
+        return $this->belongsTo(Lecturer::class);
+    }
+
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class);
+    }
+
+    public function submits()
+    {
+        return $this->hasMany(Submit::class);
+    }}
