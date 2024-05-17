@@ -84,7 +84,7 @@ class LecturerController extends Controller
         // If the course is already registered, return with an error message
         return redirect()->back()->with('error', 'You have already registered for this course.');
     }
-    
+
     $teach = new Teach();
     $teach->lecturer_id = 1; // Hardcoded lecturer ID for now
     $teach->course_id = $request->input('course_id');
@@ -93,12 +93,25 @@ class LecturerController extends Controller
     return redirect('/take-course/assign')->with('success', 'Course registered successfully.');
 }
 
-
     public function manageCourse()
     {
         $activeNavItem = 'manageCourse';
-        return view('lecturer/manageCourse', compact('activeNavItem'));
+
+        $lecturer_id = 1; // Hardcoded lecturer ID for now
+    $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
+
+    // Retrieve all the teaches associated with the lecturer
+    $teaches = $lecturer->teaches;
+
+    return view('lecturer/manageCourse', compact('activeNavItem', 'teaches'));
     }
+
+    public function deleteTeach(Teach $teach)
+{
+    $teach->delete();
+
+    return redirect()->back()->with('success', 'Teach record deleted successfully');
+}
 
     public function assignAssignment()
     {
