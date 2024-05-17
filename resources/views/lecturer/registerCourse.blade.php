@@ -1,5 +1,15 @@
 @extends('layouts.master')
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
             <div class="content">
                     <div class="container-fluid">
                         <div class="row">                      
@@ -9,25 +19,24 @@
                                         <h4 class="card-title">Register your course</h4>
                                     </div>
                                     <div class="card-body">
-                                        <form>
-                                            <div class="row">
+                                    <form method="POST" action="/add-course">
+                                    @csrf                                             
+                                    <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Full Name (disabled)</label>
-                                                        <input type="text" class="form-control" disabled placeholder="FullName" value="Prof Mustaffa">
+                                                        <input type="text" class="form-control" disabled placeholder="FullName" value="{{ $lecturer->name }}">
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Faculty Name (disabled)</label>
-                                                        <input type="text" class="form-control" disabled placeholder="facultySelect" value="KPPIM">
+                                                        <input type="text" class="form-control" disabled placeholder="facultySelect" value="{{ $faculty->name }}">
                                                     </div>  
                                                     <div class="form-group">
-                                                        <label for="courseSelect">Course</label>
-                                                        <select class="form-control" id="courseSelect">
-                                                            <option value="">Please select</option>
-                                                            <option value="science">CDCS110</option>
-                                                            <option value="engineering">CDCS240</option>
-                                                            <option value="arts">CDCS266</option>
-                                                            <option value="medicine">CDCS264</option>
+                                                        <label for="course">Course</label>
+                                                        <select class="form-control" name="course_id" id="course">
+                                                        @foreach($courses as $course)
+                                                        <option value="{{ $course->id }}">{{ $course->name }} ({{ $course->code }})</option>
+                                                        @endforeach
                                                         </select>
                                                     </div>                                                    
                                                 </div>

@@ -1,5 +1,10 @@
 @extends('layouts.master')
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
             <div class="content">
                     <div class="container-fluid">
                         <div class="row">
@@ -21,11 +26,11 @@
                                                     <tbody>
                                                         <tr>
                                                             <th class="text-left">Full Name</th>
-                                                            <td class="text-right">Professor Mustaffa</td>
+                                                            <td class="text-right">{{ $lecturer->name }}</td>
                                                         </tr>
                                                         <tr>
                                                             <th class="text-left">Faculty Name</th>
-                                                            <td class="text-right">KPPIM</td>
+                                                            <td class="text-right">{{ $faculty->name }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -42,25 +47,24 @@
                                         <h4 class="card-title">Edit Profile</h4>
                                     </div>
                                     <div class="card-body">
-                                        <form>
+                                    <form method="POST" action="/update-profile">
+                                    @csrf 
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>Full Name</label>
-                                                        <input type="text" class="form-control" placeholder="FullName" value="Prof Mustaffa">
+                                                        <input type="text" class="form-control" name="name" placeholder="Full Name" value="{{ $lecturer->name }}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="facultySelect">Faculty</label>
-                                                        <select class="form-control" id="facultySelect">
-                                                            <option value="">Please select</option>
-                                                            <option value="science">Science</option>
-                                                            <option value="engineering">Engineering</option>
-                                                            <option value="arts">Arts</option>
-                                                            <option value="medicine">Medicine</option>
+                                                        <label for="faculty">Faculty</label>
+                                                        <select class="form-control" name="faculty_id" id="faculty">
+                                                        @foreach($faculties as $faculty)
+                                                        <option value="{{ $faculty->id }}" {{ $lecturer->faculty_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}</option>
+                                                        @endforeach
                                                         </select>
                                                     </div>
                                                 </div>

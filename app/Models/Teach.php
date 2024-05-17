@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Teach extends Model
 {
     protected $fillable = [];
+    public $timestamps = false; // Disable automatic management of timestamps
+
 
     public function course()
     {

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Lecturer extends Model
 {
     protected $fillable = ['email', 'name', 'role', 'profile_pic'];
+    public $timestamps = false; // Disable automatic management of timestamps
+
 
     public function faculty()
     {
@@ -22,4 +24,6 @@ class Lecturer extends Model
     public function assignments()
     {
         return $this->hasMany(Assignment::class);
-    }}
+    }
+
+}

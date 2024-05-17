@@ -5,10 +5,12 @@ use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\StudentController;
 
 //LECTURER SIDE
-Route::get('/login', [LecturerController::class, 'login']);
+Route::get('/', [LecturerController::class, 'login']);
 Route::get('/signup', [LecturerController::class, 'signup']);
 Route::get('/dashboard', [LecturerController::class, 'dashboard']);
+Route::post('/update-profile', [LecturerController::class, 'updateProfile']);
 Route::get('/take-course/assign', [LecturerController::class, 'registerCourse']);
+Route::post('/add-course', [LecturerController::class, 'addCourse']);
 Route::get('/take-course/manage', [LecturerController::class, 'manageCourse']);
 Route::get('/assignment/assign', [LecturerController::class, 'assignAssignment']);
 Route::get('/assignment/manage', [LecturerController::class, 'manageAssignment']);
