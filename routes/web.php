@@ -14,6 +14,7 @@ Route::post('/add-course', [LecturerController::class, 'addCourse']);
 Route::get('/take-course/manage', [LecturerController::class, 'manageCourse']);
 Route::delete('/delete-teach/{teach}', [LecturerController::class, 'deleteTeach'])->name('delete-teach');
 Route::get('/assignment/assign', [LecturerController::class, 'assignAssignment']);
+Route::post('/add-assignment', [LecturerController::class, 'addAssignment'])->name('register-assignment');
 Route::get('/assignment/manage', [LecturerController::class, 'manageAssignment']);
 Route::get('/take-course/manage/details', [LecturerController::class, 'manageDetailAssignment']);
 Route::get('/quiz/assign', [LecturerController::class, 'assignQuiz']);

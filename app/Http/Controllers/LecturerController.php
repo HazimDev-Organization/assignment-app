@@ -5,7 +5,9 @@ use App\Models\Lecturer;
 use App\Models\Faculty;
 use App\Models\Course;
 use App\Models\Teach;
+use App\Models\Assignment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LecturerController extends Controller
 {
@@ -116,8 +118,58 @@ class LecturerController extends Controller
     public function assignAssignment()
     {
         $activeNavItem = 'registerAssignment';
-        return view('lecturer/registerAssignment', compact('activeNavItem'));
+
+        $lecturer_id = 1; // Hardcoded lecturer ID for now
+        $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
+        $teaches = $lecturer->teaches;
+
+        return view('lecturer/registerAssignment', compact('activeNavItem','teaches'));
     }
+
+    
+    public function addAssignment(Request $request)
+{
+    // Validate the incoming request data
+    $validator = Validator::make($request->all(), [
+        'title' => 'required|string|max:255',
+        'teach_id' => 'required|exists:courses,id', // assuming the course id is the reference here
+        'status' => 'required|in:Active,Inactive',
+        'dateline' => 'required|date',
+        'fileInput' => 'required|file|max:10240', // Max 10MB file size
+    ]);
+
+    // Check if validation fails
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    // Find the course entry to ensure it exists
+    $courseId = $request->input('teach_id');
+    
+    // Create a new assignment instance
+    $assignment = new Assignment();
+    $assignment->title = $request->input('title');
+    $assignment->course_id = $courseId; // using teach_id as course_id based on the form
+    $assignment->lecturer_id = 1; // Replace with authenticated lecturer ID
+    $assignment->faculty_id = 1; // Replace with actual faculty ID
+    $assignment->status = $request->input('status');
+    $assignment->dateline = $request->input('dateline');
+    $assignment->created_at = now(); // Manually set created_at timestamp
+
+    // Upload and store the assignment file
+    if ($request->hasFile('fileInput')) {
+        $file = $request->file('fileInput');
+        $fileName = time().'_'.$file->getClientOriginalName();
+        $filePath = $file->storeAs('assignment_files', $fileName, 'public'); // Store file in public storage
+        $assignment->assignmentDetails_file = $filePath;
+    }
+
+    // Save the assignment
+    $assignment->save();
+
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'Assignment added successfully.');
+}
 
     public function manageAssignment()
     {
