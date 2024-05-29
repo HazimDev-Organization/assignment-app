@@ -16,7 +16,14 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name');
         });        
-    }
+    // Insert default data
+    DB::table('courses')->insert([
+        ['name' => 'SOFTWARE IMPROVEMENET', 'code' => 'ISP573'],
+        ['name' => 'SOFTWARE TESTING', 'code' => 'ISP601'],
+    ]);
+}
+
+    
 
     /**
      * Reverse the migrations.

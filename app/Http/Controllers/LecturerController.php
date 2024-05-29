@@ -5,6 +5,7 @@ use App\Models\Lecturer;
 use App\Models\Faculty;
 use App\Models\Course;
 use App\Models\Teach;
+use App\Models\Submit;
 use App\Models\Assignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -174,14 +175,81 @@ class LecturerController extends Controller
     public function manageAssignment()
     {
         $activeNavItem = 'manageAssignment';
-        return view('lecturer/manageAssignment', compact('activeNavItem'));
+
+        $lecturer_id = 1; // Hardcoded lecturer ID for now
+        $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
+    
+        // Retrieve all the teaches associated with the lecturer
+        $assignments = $lecturer->assignments;
+
+        return view('lecturer/manageAssignment', compact('activeNavItem','assignments'));
     }
 
-    public function manageDetailAssignment()
+    public function toggleAssignmentStatus($id)
+    {
+        // Find the assignment by ID
+        $assignment = Assignment::find($id);
+
+        if ($assignment) {
+            // Toggle the status
+            $assignment->status = ($assignment->status == 'Active') ? 'Inactive' : 'Active';
+            $assignment->save();
+
+            return redirect()->back()->with('success', 'Assignment status updated successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Assignment not found.');
+        }
+    }
+
+    public function deleteAssignment($id)
+{
+    // Find the assignment by ID
+    $assignment = Assignment::find($id);
+
+    if ($assignment) {
+        // Delete the assignment
+        $assignment->delete();
+        return redirect()->back()->with('success', 'Assignment deleted successfully.');
+    } else {
+        return redirect()->back()->with('error', 'Assignment not found.');
+    }
+}
+
+    public function manageDetailAssignment($id)
     {
         $activeNavItem = 'manageAssignment';
-        return view('lecturer/manageDetailAssignment', compact('activeNavItem'));
+
+        $assignment = Assignment::find($id);
+
+        if (!$assignment) {
+            return redirect()->back()->with('error', 'Assignment not found.');
+        }
+
+        $submits = Submit::where('assignment_id', $id)->get();
+        $lecturer = $assignment->lecturer; // Assuming you have a relationship set up
+        $course = $assignment->course; // Assuming you have a relationship set up
+
+        return view('lecturer/manageDetailAssignment', compact('activeNavItem', 'assignment', 'submits', 'lecturer', 'course'));
     }
+
+    public function giveMarks(Request $request, $id)
+{
+
+    $submit = Submit::find($id);
+
+    if (!$submit) {
+        return redirect()->back()->with('error', 'Submission not found.');
+    }
+
+    $request->validate([
+        'marks' => 'required|numeric|min:0|max:100',
+    ]);
+
+    $submit->marks = $request->input('marks');
+    $submit->save();
+
+    return redirect()->back()->with('success', 'Marks updated successfully.');
+}
 
     public function assignQuiz()
     {

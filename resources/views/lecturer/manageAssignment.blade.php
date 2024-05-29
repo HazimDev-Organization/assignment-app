@@ -12,7 +12,7 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No.</th>
                                     <th>Course</th>
                                     <th>Created at</th>
                                     <th>Deadline</th>
@@ -21,37 +21,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>CDCS266</td>
-                                    <td>2023-08-31 13:05:55</td>
-                                    <td>2023-09-01</td>
-                                    <td>                                
-                                    <button class="btn btn-success btn-sm">ACTIVE</button>
-                                    </td>
-                                    <td><a class="btn btn-primary btn-sm" href="/take-course/manage/details">DETAILS</a></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>CDCS240</td>
-                                    <td>2023-08-31 13:05:55</td>
-                                    <td>2023-09-01</td>
+                            @php
+                                $count = 1; // Initialize count variable
+                            @endphp
+                            @foreach($assignments as $assignment)
+                            <tr>    
+                                <td>{{ $count }}</td>
+                                <td>{{ $assignment->course->name }}</td>
+                                    <td>{{ $assignment->created_at }}</td>
+                                    <td>{{ $assignment->dateline }}</td>
                                     <td>
-                                    <button class="btn btn-default btn-sm">INACTIVE</button>
+                                    <form method="POST" action="{{ route('toggle-assignment-status', $assignment->id) }}">
+                                        @csrf
+                                        @if($assignment->status == 'Active')
+                                            <button type="submit" class="btn btn-success btn-sm">ACTIVE</button>
+                                        @else
+                                            <button type="submit" class="btn btn-default btn-sm">INACTIVE</button>
+                                        @endif
+                                    </form>
                                     </td>
-                                    <td><a class="btn btn-primary btn-sm" href="/take-course/manage/details">DETAILS</a></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>CDCS264</td>
-                                    <td>2023-08-31 13:05:55</td>
-                                    <td>2023-09-01</td>
                                     <td>
-                                    <button class="btn btn-default btn-sm">INACTIVE</button>
-                                    </td>
-                                    <td><button class="btn btn-primary btn-sm">DETAILS</button></td>
-                                </tr>            
-                            </tbody>
+                <a class="btn btn-primary btn-sm" href="{{ route('assignment-details', $assignment->id) }}">DETAILS</a>
+                <p></p>
+                <form method="POST" action="{{ route('delete-assignment', $assignment->id) }}" onsubmit="return confirm('Are you sure you want to delete this assignment record?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
+                </form>
+            </td>
+            <td></td> <!-- Empty cell to maintain alignment -->
+        </tr>
+                                @php
+                                $count++; // Increment count variable
+                            @endphp
+                            @endforeach                                           
+                            </tbody>                               
                         </table>
                     </div>
                 </div>

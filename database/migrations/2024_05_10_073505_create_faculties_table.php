@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
         });
+
+        DB::table('faculties')->insert([
+            ['name' => 'N/A'],
+        ]);
         
     }
 
