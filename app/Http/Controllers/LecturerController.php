@@ -135,7 +135,7 @@ class LecturerController extends Controller
     // Validate the incoming request data
     $validator = Validator::make($request->all(), [
         'title' => 'required|string|max:255',
-        'teach_id' => 'required|exists:courses,id', // assuming the course id is the reference here
+        'teach_id' => 'required|exists:teaches,id', // assuming the course id is the reference here
         'status' => 'required|in:Active,Inactive',
         'dateline' => 'required|date',
         'fileInput' => 'required|file|max:10240', // Max 10MB file size
@@ -147,14 +147,12 @@ class LecturerController extends Controller
     }
 
     // Find the course entry to ensure it exists
-    $courseId = $request->input('teach_id');
+    $teach_id = $request->input('teach_id');
     
     // Create a new assignment instance
     $assignment = new Assignment();
     $assignment->title = $request->input('title');
-    $assignment->course_id = $courseId; // using teach_id as course_id based on the form
-    $assignment->lecturer_id = 1; // Replace with authenticated lecturer ID
-    $assignment->faculty_id = 1; // Replace with actual faculty ID
+    $assignment->teach_id = $teach_id; // using teach_id as course_id based on the form
     $assignment->status = $request->input('status');
     $assignment->dateline = $request->input('dateline');
     $assignment->created_at = now(); // Manually set created_at timestamp
@@ -174,18 +172,22 @@ class LecturerController extends Controller
     return redirect()->back()->with('success', 'Assignment added successfully.');
 }
 
-    public function manageAssignment()
-    {
-        $activeNavItem = 'manageAssignment';
+public function manageAssignment()
+{
+    $activeNavItem = 'manageAssignment';
 
-        $lecturer_id = 1; // Hardcoded lecturer ID for now
-        $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
-    
-        // Retrieve all the teaches associated with the lecturer
-        $assignments = $lecturer->assignments;
+    $lecturer_id = 1; // Hardcoded lecturer ID for now
+    $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
 
-        return view('lecturer/manageAssignment', compact('activeNavItem','assignments'));
-    }
+    // Retrieve all the teaches associated with the lecturer
+    $teach_ids = $lecturer->teaches()->pluck('id');
+
+    // Retrieve all assignments that have teach_ids associated with the lecturer
+    $assignments = Assignment::whereIn('teach_id', $teach_ids)->get();
+
+    return view('lecturer/manageAssignment', compact('activeNavItem', 'assignments'));
+}
+
 
     public function toggleAssignmentStatus($id)
     {

@@ -26,20 +26,11 @@ class Assignment extends Model
         'status'
     ];
     
-    public function course()
+    public function Teach()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Teach::class);
     }
 
-    public function lecturer()
-    {
-        return $this->belongsTo(Lecturer::class);
-    }
-
-    public function faculty()
-    {
-        return $this->belongsTo(Faculty::class);
-    }
 
     public function submits()
     {

@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
-            $table->string('lecturer_id');
-            $table->foreign('lecturer_id')->references('id')->on('lecturers')->onDelete('cascade');
-            $table->foreignId('faculty_id')->constrained()->onDelete('cascade');
+            $table->foreignId('teach_id')->constrained('teaches')->onDelete('cascade');        
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('assignmentDetails_file');
             $table->dateTime('dateline');

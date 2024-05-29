@@ -1,5 +1,10 @@
 @extends('layouts.master')
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="content">
     <div class="container-fluid">
         <div class="row">                      
@@ -27,7 +32,7 @@
                             @foreach($assignments as $assignment)
                             <tr>    
                                 <td>{{ $count }}</td>
-                                <td>{{ $assignment->course->name }}</td>
+                                <td>{{ $assignment->teach->course->name }}</td>
                                     <td>{{ $assignment->created_at }}</td>
                                     <td>{{ $assignment->dateline }}</td>
                                     <td>

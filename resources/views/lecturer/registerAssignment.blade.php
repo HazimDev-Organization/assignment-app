@@ -31,7 +31,7 @@
                     <label for="teach">Course Name</label>
                     <select class="form-control" name="teach_id" id="teach">
                         @foreach($teaches as $teach)
-                        <option value="{{ $teach->course->id }}">{{ $teach->course->name }} ({{ $teach->course->code }})</option>
+                        <option value="{{ $teach->id }}">{{ $teach->course->name }} ({{ $teach->course->code }})</option>
                         @endforeach
                     </select>
                 </div>                                                    

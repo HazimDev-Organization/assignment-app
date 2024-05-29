@@ -16,6 +16,7 @@ class Learn extends Model
     {
         return $this->belongsTo(Teach::class);
     }
+    
 
     public function student()
     {

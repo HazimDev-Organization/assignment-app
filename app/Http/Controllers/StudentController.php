@@ -7,7 +7,10 @@ use App\Models\Student;
 use App\Models\Faculty;
 use App\Models\Teach;
 use App\Models\Learn;
-
+use App\Models\Submit;
+use App\Models\Assignment;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -113,11 +116,54 @@ public function addCourse(Request $request)
     return redirect()->back()->with('success', 'Learn record deleted successfully');
 }
 
-    public function assignmentDetails()
-    {
-        $activeNavItem = 'registerAssignment';
-        return view('student/assignmentDetails', compact('activeNavItem'));
+public function assignmentDetails()
+{
+    $activeNavItem = 'registerAssignment';
+
+    $student_id = 1; // Hardcoded student ID for now
+    $student = Student::find($student_id); // Fetch the student data
+
+    // Retrieve all the learns associated with the student
+    $learns = $student->learns;
+
+    // Retrieve all assignments associated with the retrieved learns
+    $assignments = collect();
+    foreach ($learns as $learn) {
+        $assignments = $assignments->merge($learn->teach->assignments);
     }
+    return view('student/assignmentDetails', compact('activeNavItem', 'assignments'));
+}
+
+public function submitAssignment(Request $request)
+{
+    // Validate the incoming request data
+    $validator = Validator::make($request->all(), [
+        'assignment_id' => 'required|exists:assignments,id',
+        'assignmentFile' => 'required|file|max:10240', // Max 10MB file size
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    // Handle file upload
+    if ($request->hasFile('assignmentFile')) {
+        $file = $request->file('assignmentFile');
+        $fileName = time().'_'.$file->getClientOriginalName();
+        $filePath = $file->storeAs('assignment_submissions', $fileName, 'public'); // Store file in public storage
+
+        // Create a new submission record
+        $submission = new Submit();
+        $submission->assignment_id = $request->input('assignment_id');
+        $submission->assignmentSubmission_file = $filePath;
+        $submission->student_id = 1; // hardcoded
+        $submission->save();
+
+        return redirect()->back()->with('success', 'Assignment submitted successfully.');
+    }
+
+    return redirect()->back()->with('error', 'File upload failed.');
+}
 
     public function assignmentResults()
     {

@@ -26,4 +26,9 @@ class Teach extends Model
         return $this->hasMany(Learn::class);
     }
 
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
+
 }

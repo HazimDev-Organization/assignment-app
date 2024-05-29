@@ -34,4 +34,5 @@ Route::post('/student-add-course', [StudentController::class, 'addCourse'])->nam
 Route::delete('/delete-learn/{learn}', [StudentController::class, 'deleteLearn'])->name('delete-learn');
 Route::get('/student-take-course/manage', [StudentController::class, 'manageCourse']);
 Route::get('/student-assignment/details', [StudentController::class, 'assignmentDetails']);
+Route::post('/submit-assignment', [StudentController::class, 'submitAssignment'])->name('submit-assignment');
 Route::get('/student-assignment/result', [StudentController::class, 'assignmentResults']);
