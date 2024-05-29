@@ -28,6 +28,7 @@ Route::get('/quiz/manage', [LecturerController::class, 'manageQuiz']);
 Route::get('/student-login', [StudentController::class, 'login']);
 Route::get('/student-signup', [StudentController::class, 'signup']);
 Route::get('/student-dashboard', [StudentController::class, 'dashboard']);
+Route::post('/student-update-profile', [StudentController::class, 'updateProfile']);
 Route::get('/student-take-course/register', [StudentController::class, 'registerCourse']);
 Route::get('/student-take-course/manage', [StudentController::class, 'manageCourse']);
 Route::get('/student-assignment/details', [StudentController::class, 'assignmentDetails']);
