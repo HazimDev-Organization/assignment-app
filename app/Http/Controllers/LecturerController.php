@@ -90,7 +90,9 @@ class LecturerController extends Controller
 
     $teach = new Teach();
     $teach->lecturer_id = 1; // Hardcoded lecturer ID for now
+    $teach->faculty_id = $request->input('faculty_id');
     $teach->course_id = $request->input('course_id');
+
     $teach->save();
     
     return redirect('/take-course/assign')->with('success', 'Course registered successfully.');

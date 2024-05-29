@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('faculty_id')->constrained()->onDelete('cascade');
             $table->string('code')->unique();
             $table->string('name');
         });        
     // Insert default data
     DB::table('courses')->insert([
-        ['name' => 'SOFTWARE IMPROVEMENET', 'code' => 'ISP573'],
-        ['name' => 'SOFTWARE TESTING', 'code' => 'ISP601'],
+        ['name' => 'SOFTWARE IMPROVEMENET', 'faculty_id' => '2', 'code' => 'ISP573'],
+        ['name' => 'SOFTWARE TESTING', 'faculty_id' => '2', 'code' => 'ISP601'],
     ]);
 }
 

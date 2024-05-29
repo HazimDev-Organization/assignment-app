@@ -30,6 +30,7 @@
                                                     <div class="form-group">
                                                         <label>Faculty Name (disabled)</label>
                                                         <input type="text" class="form-control" disabled placeholder="facultySelect" value="{{ $faculty->name }}">
+                                                        <input type="hidden" name="faculty_id" value="{{ $faculty->id }}">
                                                     </div>  
                                                     <div class="form-group">
                                                         <label for="course">Course</label>

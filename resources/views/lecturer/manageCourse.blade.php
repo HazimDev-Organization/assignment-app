@@ -33,7 +33,7 @@
                                     <td>{{ $teach->course->name }}</td>
                                     <td>{{ $teach->course->code }}</td>
                                     <td>
-                                            <form method="POST" action="{{ route('delete-teach', $teach->id) }}" onsubmit="return confirm('Are you sure you want to delete this teach record?')">
+                                            <form method="POST" action="{{ route('delete-teach', $teach->id) }}" onsubmit="return confirm('Are you sure you want to delete this course record?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">DELETE</button>

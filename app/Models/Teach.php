@@ -19,4 +19,11 @@ class Teach extends Model
     public function lecturer()
     {
         return $this->belongsTo(Lecturer::class);
-    }}
+    }
+
+    public function learns()
+    {
+        return $this->hasMany(Learn::class);
+    }
+
+}

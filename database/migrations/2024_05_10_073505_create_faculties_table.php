@@ -18,6 +18,7 @@ return new class extends Migration
 
         DB::table('faculties')->insert([
             ['name' => 'N/A'],
+            ['name' => 'KPPIM'],
         ]);
         
     }

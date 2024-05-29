@@ -30,6 +30,8 @@ Route::get('/student-signup', [StudentController::class, 'signup']);
 Route::get('/student-dashboard', [StudentController::class, 'dashboard']);
 Route::post('/student-update-profile', [StudentController::class, 'updateProfile']);
 Route::get('/student-take-course/register', [StudentController::class, 'registerCourse']);
+Route::post('/student-add-course', [StudentController::class, 'addCourse'])->name('student-add-course');
+Route::delete('/delete-learn/{learn}', [StudentController::class, 'deleteLearn'])->name('delete-learn');
 Route::get('/student-take-course/manage', [StudentController::class, 'manageCourse']);
 Route::get('/student-assignment/details', [StudentController::class, 'assignmentDetails']);
 Route::get('/student-assignment/result', [StudentController::class, 'assignmentResults']);

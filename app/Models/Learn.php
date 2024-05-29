@@ -9,9 +9,12 @@ class Learn extends Model
 {
     protected $fillable = [];
 
-    public function course()
+    public $timestamps = false; // Disable automatic management of timestamps
+
+
+    public function teach()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Teach::class);
     }
 
     public function student()
