@@ -12,35 +12,29 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>No.</th>
+                                    <th>title</th>
                                     <th>Course</th>
                                     <th>Lecturer</th>
                                     <th>Marks</th>
-                                    <th>Marked at</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>CDCS266</td>
-                                    <td>Prof Mustaffa</td>
-                                    <td>5</td>
-                                    <td>2023-08-31 13:05:55</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>CDCS266</td>
-                                    <td>Prof Mustaffa</td>
-                                    <td>5</td>
-                                    <td>2023-08-31 13:05:55</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>CDCS266</td>
-                                    <td>Prof Mustaffa</td>
-                                    <td>5</td>
-                                    <td>2023-08-31 13:05:55</td>
-                                </tr>
+                            @php
+                                $count = 1; // Initialize count variable
+                            @endphp
+                            @foreach($submits as $submit)
+                            <tr>    
+                                <td>{{ $count }}</td>
+                                <td>{{ $submit->assignment->title}}</td>
+                                    <td>{{ $submit->assignment->teach->course->name }} ({{ $submit->assignment->teach->course->code }})</td>
+                                    <td>{{ $submit->assignment->teach->lecturer->name }}</td>
+                                    <td>{{ $submit->marks}}</td>
+                            </tr>
+                                @php
+                                $count++; // Increment count variable
+                            @endphp
+                            @endforeach                                           
                             </tbody>
                         </table>
                     </div>

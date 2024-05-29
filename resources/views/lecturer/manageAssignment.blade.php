@@ -17,23 +17,18 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
+                                    <th>Title</th>
                                     <th>Course</th>
-                                    <th>Created at</th>
                                     <th>Deadline</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            @php
-                                $count = 1; // Initialize count variable
-                            @endphp
+                            <tbody>                            
                             @foreach($assignments as $assignment)
                             <tr>    
-                                <td>{{ $count }}</td>
-                                <td>{{ $assignment->teach->course->name }}</td>
-                                    <td>{{ $assignment->created_at }}</td>
+                                <td>{{ $assignment->title}}</td>
+                                <td>{{ $assignment->teach->course->name }} ({{ $assignment->teach->course->code }})</td>
                                     <td>{{ $assignment->dateline }}</td>
                                     <td>
                                     <form method="POST" action="{{ route('toggle-assignment-status', $assignment->id) }}">
@@ -55,10 +50,7 @@
                 </form>
             </td>
             <td></td> <!-- Empty cell to maintain alignment -->
-        </tr>
-                                @php
-                                $count++; // Increment count variable
-                            @endphp
+        </tr>                               
                             @endforeach                                           
                             </tbody>                               
                         </table>

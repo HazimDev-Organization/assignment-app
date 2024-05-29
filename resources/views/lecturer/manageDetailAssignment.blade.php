@@ -15,11 +15,19 @@
                             <tbody>
                                 <tr class="table table-bordered">
                                     <th>Lecture</th>
-                                    <td>{{ $lecturer->name }}</td>
+                                    <td>{{ $assignment->teach->lecturer->name }}</td>
+                                </tr>
+                                <tr class="table table-bordered">
+                                    <th>Created At</th>
+                                    <td>{{ $assignment->created_at}}</td>
+                                </tr>
+                                <tr class="table table-bordered">
+                                    <th>Deadline</th>
+                                    <td>{{ $assignment->dateline}}</td>
                                 </tr>
                                 <tr class="table table-bordered">
                                     <th>Course</th>
-                                    <td>{{ $course->code }}</td>
+                                    <td>{{ $assignment->teach->course->name }} ({{ $assignment->teach->course->code }})</td>
                                 </tr>
                                 <tr class="table table-bordered">
                                     <th>Status</th>
@@ -51,7 +59,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Student Name</th>
-                                    <th>Student ID</th>
                                     <th>Submitted File</th>
                                     <th>Marks</th>
                                     <th>Give Marks</th>
@@ -72,8 +79,7 @@
                                 <tr>
                                     <td>{{ $submit->id }}</td>
                                     <td>{{ $submit->student->name }}</td>
-                                    <td>{{ $submit->student->student_id }}</td>
-                                    <td><a href="{{ $submit->submitted_file }}" target="_blank">{{ basename($submit->submitted_file) }}</a></td>
+                                    <td><a href="{{ asset('storage/app/public/' . $submit->assignmentSubmission_file) }}" target="_blank">Download File</a></td>
                                     <td>{{ $submit->marks ?? 'n/a' }}</td>
                                     <td>
                                         <form method="POST" action="{{ route('give-marks', $submit->id) }}">

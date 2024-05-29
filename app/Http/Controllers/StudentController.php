@@ -168,7 +168,14 @@ public function submitAssignment(Request $request)
     public function assignmentResults()
     {
         $activeNavItem = 'manageAssignment';
-        return view('student/assignmentResult', compact('activeNavItem'));
+
+        $student_id = 1; // Hardcoded lecturer ID for now
+    $student = Student::find($student_id); // Fetch the lecturer data
+
+    // Retrieve all the teaches associated with the lecturer
+    $submits = $student->submits;
+
+        return view('student/assignmentResult', compact('activeNavItem', 'submits'));
     }
 
     public function assignQuiz()
