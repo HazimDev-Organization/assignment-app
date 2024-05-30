@@ -49,28 +49,28 @@
                                     <div class="card-body">
                                     <form method="POST" action="/update-profile">
                                     @csrf 
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Full Name</label>
-                                                        <input type="text" class="form-control" name="name" placeholder="Full Name" value="{{ $lecturer->name }}">
-                                                    </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Full Name</label>
+                                                    <input type="text" class="form-control" name="name" placeholder="Full Name" value="{{ $student->name }}">
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="faculty">Faculty</label>
-                                                        <select class="form-control" name="faculty_id" id="faculty">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="faculty">Faculty</label>
+                                                    <select class="form-control" name="faculty_id" id="faculty" {{ $faculty->id != 1 ? 'disabled' : '' }}>
                                                         @foreach($faculties as $faculty)
-                                                        <option value="{{ $faculty->id }}" {{ $lecturer->faculty_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}</option>
+                                                        <option value="{{ $faculty->id }}" {{ $student->faculty_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}</option>
                                                         @endforeach
-                                                        </select>
-                                                    </div>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
-                                            <div class="clearfix"></div>
+                                        </div>
+                                        <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
+                                        <div class="clearfix"></div>                                    
                                         </form>
                                     </div>
                                 </div>
