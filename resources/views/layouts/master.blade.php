@@ -35,6 +35,7 @@
 </head>
 
 <body>
+    
     <div class="wrapper">
         <div class="sidebar" data-color="blue">
             <!--
@@ -111,9 +112,14 @@
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">                        
                         <ul class="navbar-nav ml-auto">                                          
                             <li class="nav-item">
-                                <a class="nav-link" href="{{url('login')}}">
-                                    <span class="no-icon">Log out</span>
-                                </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
+<a href="{{ route('logout') }}"
+    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    Log out
+</a>
                             </li>
                         </ul>
                     </div>

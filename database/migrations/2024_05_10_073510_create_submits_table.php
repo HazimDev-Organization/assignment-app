@@ -18,8 +18,8 @@ return new class extends Migration
             $table->decimal('marks')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            $table->string('student_id');
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+
         });
     }
 

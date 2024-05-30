@@ -5,12 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\StudentController;
 
+
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::get('/signup', [AuthController::class, 'register'])->name('register');
 Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('registration.post');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
+Route::post('/logout', function () { Auth::logout(); request()->session()->invalidate(); request()->session()->regenerateToken(); return redirect('/'); })->name('logout');
 
-//LECTURER SIDE
+Route::group(['middleware' => 'auth'], function () {
+    //LECTURER SIDE
 Route::get('/dashboard', [LecturerController::class, 'dashboard']);
 Route::post('/update-profile', [LecturerController::class, 'updateProfile']);
 Route::get('/take-course/assign', [LecturerController::class, 'registerCourse']);
@@ -29,8 +32,6 @@ Route::get('/quiz/manage', [LecturerController::class, 'manageQuiz']);
 
 
 //STUDENT SIDE
-Route::get('/student-login', [StudentController::class, 'login']);
-Route::get('/student-signup', [StudentController::class, 'signup']);
 Route::get('/student-dashboard', [StudentController::class, 'dashboard']);
 Route::post('/student-update-profile', [StudentController::class, 'updateProfile']);
 Route::get('/student-take-course/register', [StudentController::class, 'registerCourse']);
@@ -40,3 +41,5 @@ Route::get('/student-take-course/manage', [StudentController::class, 'manageCour
 Route::get('/student-assignment/details', [StudentController::class, 'assignmentDetails']);
 Route::post('/submit-assignment', [StudentController::class, 'submitAssignment'])->name('submit-assignment');
 Route::get('/student-assignment/result', [StudentController::class, 'assignmentResults']);
+
+});

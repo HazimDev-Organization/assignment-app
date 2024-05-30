@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lecturer extends Model
 {
-    protected $fillable = ['email', 'name', 'role', 'profile_pic'];
+    protected $fillable = ['email', 'name', 'role','faculty_id', 'profile_pic'];
     public $timestamps = false; // Disable automatic management of timestamps
 
 
