@@ -35,43 +35,50 @@
       <div class="row d-flex justify-content-center">
         <div class="col-lg-8">
           <h2 class="fw-bold mb-5">Sign up now</h2>
-          <form>
-
+          <form method="post" action="{{ route('registration.post') }}">
+          @csrf
             <!-- Email input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="email" id="form3Example3" class="form-control" />
-              <label class="form-label" for="form3Example3">Email address</label>
+              <input type="email" name="email" id="email" class="form-control" />
+              <label class="form-label" for="email">Email address</label>
+              @if ($errors->has('email'))
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @endif
             </div>
 
              <!-- full name input -->
              <div data-mdb-input-init class="form-outline mb-4">
-              <input type="text" id="form3Example3" class="form-control" />
-              <label class="form-label" for="form3Example3">Full Name</label>
+              <input type="text" name="name" id="name" class="form-control" />
+              <label class="form-label" for="name">Full Name</label>
+              @if ($errors->has('name'))
+                            <span class="text-danger">{{ $errors->first('name') }}</span>
+                        @endif
+
             </div>
 
             <!-- Password input -->
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="password" id="form3Example4" class="form-control" />
-              <label class="form-label" for="form3Example4">Password</label>
+              <input type="password" name="password" id="password" class="form-control" />
+              <label class="form-label" for="password">Password</label>
+              @if ($errors->has('password'))
+                            <span class="text-danger">{{ $errors->first('password') }}</span>
+                        @endif
             </div>
 
             <!-- full name input -->
             <div data-mdb-input-init class="form-outline mb-4">
-            <label class="form-label" for="options">Role: </label>
-            <div class="btn-group">
-  <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked />
-  <label class="btn btn-secondary" for="option1" data-mdb-ripple-init>Student</label>
+            <label class="form-label" for="role">Role: </label>
+    <div class="btn-group">
+    <input type="radio" class="btn-check" name="role" id="student" value="student" checked />
+        <label class="btn btn-secondary" for="student" data-mdb-ripple-init>Student</label>
 
-  <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" />
-  <label class="btn btn-secondary" for="option2" data-mdb-ripple-init>Lecturer</label>
+        <input type="radio" class="btn-check" name="role" id="lecturer" value="lecturer"/>
+        <label class="btn btn-secondary" for="lecturer" data-mdb-ripple-init>Lecturer</label>
+    </div>
 </div>
-            </div>          
+         
             <!-- Submit button -->
-            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
-              Sign up
-            </button>
-
-            <!-- Register buttons -->            
+            <input type="submit" name="submit" class="btn btn-primary btn-block mb-4" value="Submit" >
           </form>
         </div>
       </div>

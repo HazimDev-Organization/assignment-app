@@ -42,28 +42,36 @@ height: 100%;
           <span class="h1 fw-bold mb-0">Assignment App</span>
         </div>
 
-        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-
-          <form style="width: 23rem;">
-
-            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in - Lecturer</h3>
+        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">   
+          <form method="post" style="width: 23rem;" action="{{ route('login.post') }}">
+          @csrf
+            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
+            @if (Session::has('success'))
+                    <div class="alert alert-success">{{ Session::get('success') }}</div>
+                @endif   
 
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="email" id="form2Example18" class="form-control form-control-lg" />
-              <label class="form-label" for="form2Example18">Email address</label>
+              <input type="email" id="email" name="email" class="form-control form-control-lg" />
+              <label class="form-label" for="email">Email address</label>
+              @if ($errors->has('email'))
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @endif
             </div>
 
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="password" id="form2Example28" class="form-control form-control-lg" />
-              <label class="form-label" for="form2Example28">Password</label>
+              <input type="password" id="password" name="password" class="form-control form-control-lg" />
+              <label class="form-label" for="password">Password</label>
+              @if ($errors->has('password'))
+                            <span class="text-danger">{{ $errors->first('password') }}</span>
+                        @endif
             </div>
 
             <div class="pt-1 mb-4">
-              <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="button">Login</button>
+            <input type="submit" name="submit" class="btn btn-info btn-lg btn-block" value="Login" >
             </div>
 
             <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Forgot password?</a></p>
-            <p>Don't have an account? <a href="#!" class="link-info">Register here</a></p>
+            <p>Don't have an account? <a href="/signup" class="link-info">Register here</a></p>
 
           </form>
 

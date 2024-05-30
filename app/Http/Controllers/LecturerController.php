@@ -13,16 +13,6 @@ use Illuminate\Support\Facades\Validator;
 class LecturerController extends Controller
 {
     
-    public function login()
-    {
-        return view('lecturer/login');
-    }
-
-    public function signup()
-    {
-        return view('/signup');
-    }
-    
     public function dashboard()
     {
         $activeNavItem = 'dashboard';

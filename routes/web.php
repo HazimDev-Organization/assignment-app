@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\StudentController;
 
+Route::get('/', [AuthController::class, 'index'])->name('login');
+Route::get('/signup', [AuthController::class, 'register'])->name('register');
+Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('registration.post');
+Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
+
 //LECTURER SIDE
-Route::get('/', [LecturerController::class, 'login']);
-Route::get('/signup', [LecturerController::class, 'signup']);
 Route::get('/dashboard', [LecturerController::class, 'dashboard']);
 Route::post('/update-profile', [LecturerController::class, 'updateProfile']);
 Route::get('/take-course/assign', [LecturerController::class, 'registerCourse']);
