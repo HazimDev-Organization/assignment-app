@@ -128,13 +128,15 @@ public function assignmentDetails()
     // Retrieve all the learns associated with the student
     $learns = $student->learns;
 
-    // Retrieve all assignments associated with the retrieved learns
+    // Retrieve all assignments associated with the retrieved learns and filter by active status
     $assignments = collect();
     foreach ($learns as $learn) {
-        $assignments = $assignments->merge($learn->teach->assignments);
+        $assignments = $assignments->merge($learn->teach->assignments->where('status', 'Active'));
     }
+    
     return view('student/assignmentDetails', compact('activeNavItem', 'assignments'));
 }
+
 
 public function submitAssignment(Request $request)
 {    

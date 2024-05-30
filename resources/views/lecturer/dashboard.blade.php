@@ -53,7 +53,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Full Name</label>
-                                                    <input type="text" class="form-control" name="name" placeholder="Full Name" value="{{ $student->name }}">
+                                                    <input type="text" class="form-control" name="name" placeholder="Full Name" value="{{ $lecturer->name }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +63,7 @@
                                                     <label for="faculty">Faculty</label>
                                                     <select class="form-control" name="faculty_id" id="faculty" {{ $faculty->id != 1 ? 'disabled' : '' }}>
                                                         @foreach($faculties as $faculty)
-                                                        <option value="{{ $faculty->id }}" {{ $student->faculty_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}</option>
+                                                        <option value="{{ $faculty->id }}" {{ $lecturer->faculty_id == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

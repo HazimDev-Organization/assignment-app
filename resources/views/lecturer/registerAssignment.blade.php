@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label for="dateline">Dateline</label>
-                    <input type="date" class="form-control" id="dateline" name="dateline">
+                    <input type="datetime-local" class="form-control" id="dateline" name="dateline">
                 </div>
                 <div class="form-group">
                     <label for="fileInput">Choose a file</label>

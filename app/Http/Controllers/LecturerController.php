@@ -144,7 +144,7 @@ class LecturerController extends Controller
         'title' => 'required|string|max:255',
         'teach_id' => 'required|exists:teaches,id', // assuming the course id is the reference here
         'status' => 'required|in:Active,Inactive',
-        'dateline' => 'required|date',
+        'dateline' => 'required|date_format:Y-m-d\TH:i', // Validate date-time format
         'fileInput' => 'required|file|max:10240', // Max 10MB file size
     ]);
 
