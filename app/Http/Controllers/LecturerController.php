@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Teach;
 use App\Models\Submit;
 use App\Models\Assignment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,44 +17,52 @@ class LecturerController extends Controller
     public function dashboard()
     {
         $activeNavItem = 'dashboard';
-    $lecturer_id = 1; // Hardcoded lecturer ID for now
-    $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
 
-    // Assuming you have defined the relationship between Lecturer and Faculty
-    $faculty_id = $lecturer->faculty_id;
-    $faculty = Faculty::find($faculty_id);
-
-    $faculties = Faculty::all();
-
+        $user = Auth::user(); 
+        $lecturer = $user->lecturer; 
+    
+        if ($lecturer) {
+            $faculty_id = $lecturer->faculty_id;
+            $faculty = Faculty::find($faculty_id);
+            $faculties = Faculty::all();
     return view('lecturer/dashboard', compact('activeNavItem', 'lecturer', 'faculty','faculties'));
+    }
     }
 
     public function updateProfile(Request $request)
-    {
-        $lecturer_id = 1; // Hardcoded lecturer ID for now
-        $lecturer = Lecturer::find($lecturer_id);
+{
+    // Validate the request data
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'faculty_id' => 'required|exists:faculties,id', 
+    ]);
+
+    // Get the authenticated user and their associated lecturer
+    $user = Auth::user(); 
+    $lecturer = $user->lecturer;
+
+    // Update lecturer's name
+    $lecturer->name = $request->input('name');
     
-        // Update lecturer's name
-        $lecturer->name = $request->input('name');
+    // Update lecturer's faculty ID
+    $lecturer->faculty_id = $request->input('faculty_id');
     
-        // Update lecturer's faculty ID
-        $lecturer->faculty_id = $request->input('faculty_id');
+    // Save the changes
+    $lecturer->save();
     
-        // Save the changes
-        $lecturer->save();
-    
-        // Redirect back to the dashboard with a success message
-        return redirect('/dashboard')->with('success', 'Profile updated successfully.');
-    }
+    // Redirect back to the dashboard with a success message
+    return redirect('/dashboard')->with('success', 'Profile updated successfully.');
+}
+
 
     public function registerCourse()
     {
         $activeNavItem = 'registerCourse';
 
-        $lecturer_id = 1; // Hardcoded lecturer ID for now
-    $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
+    // Get the authenticated user and their associated lecturer
+    $user = Auth::user(); 
+    $lecturer = $user->lecturer;
 
-    // Assuming you have defined the relationship between Lecturer and Faculty
     $faculty_id = $lecturer->faculty_id;
     $faculty = Faculty::find($faculty_id);
 
@@ -67,10 +76,13 @@ class LecturerController extends Controller
     // Validate the incoming request data
     $request->validate([
         'course_id' => 'required|exists:courses,id', // Check if the course ID exists in the courses table
+        'faculty_id' => 'required|exists:faculties,id', // Check if the faculty ID exists in the faculties table
     ]);
 
-    // Get the lecturer ID (you can adjust this according to your logic)
-    $lecturer_id = 1; // Hardcoded lecturer ID for now
+    // Get the authenticated user and their associated lecturer
+    $user = Auth::user(); 
+    $lecturer = $user->lecturer;
+    $lecturer_id = $lecturer->id;
 
     // Check if the lecturer has already registered for the same course
     if (Teach::where('lecturer_id', $lecturer_id)->where('course_id', $request->input('course_id'))->exists()) {
@@ -78,13 +90,16 @@ class LecturerController extends Controller
         return redirect()->back()->with('error', 'You have already registered for this course.');
     }
 
+    // Create a new Teach record
     $teach = new Teach();
-    $teach->lecturer_id = 1; // Hardcoded lecturer ID for now
+    $teach->lecturer_id = $lecturer_id;
     $teach->faculty_id = $request->input('faculty_id');
     $teach->course_id = $request->input('course_id');
 
+    // Save the new record
     $teach->save();
     
+    // Redirect with a success message
     return redirect('/take-course/assign')->with('success', 'Course registered successfully.');
 }
 
@@ -92,8 +107,9 @@ class LecturerController extends Controller
     {
         $activeNavItem = 'manageCourse';
 
-        $lecturer_id = 1; // Hardcoded lecturer ID for now
-    $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
+      // Get the lecturer ID 
+      $user = Auth::user(); 
+      $lecturer = $user->lecturer;
 
     // Retrieve all the teaches associated with the lecturer
     $teaches = $lecturer->teaches;
@@ -111,9 +127,10 @@ class LecturerController extends Controller
     public function assignAssignment()
     {
         $activeNavItem = 'registerAssignment';
-
-        $lecturer_id = 1; // Hardcoded lecturer ID for now
-        $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
+        
+        // Get the lecturer ID 
+        $user = Auth::user(); 
+        $lecturer = $user->lecturer;
         $teaches = $lecturer->teaches;
 
         return view('lecturer/registerAssignment', compact('activeNavItem','teaches'));
@@ -165,9 +182,10 @@ class LecturerController extends Controller
 public function manageAssignment()
 {
     $activeNavItem = 'manageAssignment';
-
-    $lecturer_id = 1; // Hardcoded lecturer ID for now
-    $lecturer = Lecturer::find($lecturer_id); // Fetch the lecturer data
+    
+    // Get the lecturer ID 
+    $user = Auth::user(); 
+    $lecturer = $user->lecturer;
 
     // Retrieve all the teaches associated with the lecturer
     $teach_ids = $lecturer->teaches()->pluck('id');
@@ -244,16 +262,5 @@ public function manageAssignment()
 
     return redirect()->back()->with('success', 'Marks updated successfully.');
 }
-
-    public function assignQuiz()
-    {
-        $activeNavItem = 'registerQuiz';
-        return view('lecturer/assignAssignment', compact('activeNavItem'));
-    }
-
-    public function manageQuiz()
-    {
-        $activeNavItem = 'manageQuiz';
-        return view('lecturer/manageAssignment', compact('activeNavItem'));
-    }    
+ 
 }

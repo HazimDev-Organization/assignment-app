@@ -34,6 +34,7 @@ class AuthController extends Controller
     if ($user) {
         if ($data['role'] == 'student') {
             Student::create([
+                'user_id' => $user->id,
                 'email' => $user->email,
                 'name' => $user->name,
                 'role' => $user->role,
@@ -42,6 +43,7 @@ class AuthController extends Controller
             ]);
         } elseif ($data['role'] == 'lecturer') {
             Lecturer::create([
+                'user_id' => $user->id,
                 'email' => $user->email,
                 'name' => $user->name,
                 'role' => $user->role,

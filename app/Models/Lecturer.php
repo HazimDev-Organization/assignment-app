@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lecturer extends Model
 {
-    protected $fillable = ['email', 'name', 'role','faculty_id', 'profile_pic'];
+    protected $fillable = ['user_id','email', 'name', 'role','faculty_id', 'profile_pic'];
     public $timestamps = false; // Disable automatic management of timestamps
 
-
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
     public function faculty()
     {
         return $this->belongsTo(Faculty::class);

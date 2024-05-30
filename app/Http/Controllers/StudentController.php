@@ -9,25 +9,20 @@ use App\Models\Teach;
 use App\Models\Learn;
 use App\Models\Submit;
 use App\Models\Assignment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-
-
-    public function login()
-    {
-        return view('student/login');
-    }
-
     public function dashboard()
     {
         $activeNavItem = 'dashboard';
-    $student_id = 1; // Hardcoded student ID for now
-    $student = Student::find($student_id); // Fetch the student data
 
-    // Assuming you have defined the relationship between student and Faculty
+    // Get the student ID 
+    $user = Auth::user(); 
+    $student = $user->student;
+
     $faculty_id = $student->faculty_id;
     $faculty = Faculty::find($faculty_id);
 
@@ -38,9 +33,10 @@ class StudentController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $student_id = 1; // Hardcoded student ID for now
-        $student = Student::find($student_id);
-    
+        // Get the student ID 
+        $user = Auth::user(); 
+        $student = $user->student;
+
         // Update student's name
         $student->name = $request->input('name');
     
@@ -51,15 +47,16 @@ class StudentController extends Controller
         $student->save();
     
         // Redirect back to the dashboard with a success message
-        return redirect('student/dashboard')->with('success', 'Profile updated successfully.');
+        return redirect('/student-dashboard')->with('success', 'Profile updated successfully.');
     }
 
     public function registerCourse()
     {
         $activeNavItem = 'registerCourse';
 
-        $student_id = 1; // Hardcoded student ID for now
-    $student = Student::find($student_id); // Fetch the student data
+        // Get the student ID 
+        $user = Auth::user(); 
+        $student = $user->student;
 
     // Assuming you have defined the relationship between student and Faculty
     $faculty_id = $student->faculty_id;
@@ -78,8 +75,10 @@ public function addCourse(Request $request)
         'teach_id' => 'required|exists:teaches,id', // Check if the teach ID exists in the teaches table
     ]);
 
-    // Get the student ID (you can adjust this according to your logic)
-    $student_id = 1; // Hardcoded student ID for now
+        // Get the student ID 
+        $user = Auth::user(); 
+        $student = $user->student;
+        $student_id = $student->id;
 
     // Check if the student has already registered for the same course
     if (Learn::where('student_id', $student_id)->where('teach_id', $request->input('teach_id'))->exists()) {
@@ -100,8 +99,9 @@ public function addCourse(Request $request)
     {
         $activeNavItem = 'manageCourse';
 
-        $student_id = 1; // Hardcoded lecturer ID for now
-    $student = Student::find($student_id); // Fetch the lecturer data
+        // Get the student ID 
+        $user = Auth::user(); 
+        $student = $user->student;
 
     // Retrieve all the teaches associated with the lecturer
     $learns = $student->learns;
@@ -119,10 +119,12 @@ public function addCourse(Request $request)
 public function assignmentDetails()
 {
     $activeNavItem = 'registerAssignment';
-
-    $student_id = 1; // Hardcoded student ID for now
-    $student = Student::find($student_id); // Fetch the student data
-
+    
+    // Get the student ID 
+    $user = Auth::user(); 
+    $student = $user->student;
+    $student_id = $student->id;
+    
     // Retrieve all the learns associated with the student
     $learns = $student->learns;
 
@@ -135,7 +137,7 @@ public function assignmentDetails()
 }
 
 public function submitAssignment(Request $request)
-{
+{    
     // Validate the incoming request data
     $validator = Validator::make($request->all(), [
         'assignment_id' => 'required|exists:assignments,id',
@@ -151,12 +153,17 @@ public function submitAssignment(Request $request)
         $file = $request->file('assignmentFile');
         $fileName = time().'_'.$file->getClientOriginalName();
         $filePath = $file->storeAs('assignment_submissions', $fileName, 'public'); // Store file in public storage
-
+        
         // Create a new submission record
+        $user = Auth::user(); 
+        $student = $user->student;
+        $student_id = $student->id;
+
         $submission = new Submit();
         $submission->assignment_id = $request->input('assignment_id');
         $submission->assignmentSubmission_file = $filePath;
-        $submission->student_id = 1; // hardcoded
+        $submission->student_id = $student_id;
+
         $submission->save();
 
         return redirect()->back()->with('success', 'Assignment submitted successfully.');
@@ -168,25 +175,13 @@ public function submitAssignment(Request $request)
     public function assignmentResults()
     {
         $activeNavItem = 'manageAssignment';
-
-        $student_id = 1; // Hardcoded lecturer ID for now
-    $student = Student::find($student_id); // Fetch the lecturer data
+       
+        $user = Auth::user(); 
+        $student = $user->student;
 
     // Retrieve all the teaches associated with the lecturer
     $submits = $student->submits;
 
         return view('student/assignmentResult', compact('activeNavItem', 'submits'));
     }
-
-    public function assignQuiz()
-    {
-        $activeNavItem = 'registerQuiz';
-        return view('student/assignAssignment', compact('activeNavItem'));
-    }
-
-    public function manageQuiz()
-    {
-        $activeNavItem = 'manageQuiz';
-        return view('student/manageAssignment', compact('activeNavItem'));
-    }    
 }
