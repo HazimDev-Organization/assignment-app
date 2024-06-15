@@ -1,4 +1,13 @@
 <head>
+<style>
+.logo-image {
+    position: absolute; /* Position the logo absolutely */
+    top: 20px; /* Adjust the top position as needed */
+    left: 50px; /* Adjust the left position as needed */
+    width: 100px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+</style>
 <title>Assignment-App</title>
   <!-- Font Awesome -->
 <link
@@ -21,17 +30,18 @@
 <section class="text-center">
   <!-- Background image -->
   <div class="p-5 bg-image" style="
-        background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
-        height: 300px;
-        "></div>
+    background-image: url('{{ asset('img/background1.jpg') }}');
+        height: 95vh;
+        ">
+            <img src="{{ asset('img/logo.jpeg') }}" alt="Logo" class="logo-image">
+  </div>
   <!-- Background image -->
 
   <div class="card mx-4 mx-md-5 shadow-5-strong bg-body-tertiary" style="
-        margin-top: -100px;
+        margin-top: -55vh;
         backdrop-filter: blur(30px);
         ">
     <div class="card-body py-5 px-md-5">
-
       <div class="row d-flex justify-content-center">
         <div class="col-lg-8">
           <h2 class="fw-bold mb-5">Sign up now</h2>
@@ -80,6 +90,7 @@
             <!-- Submit button -->
             <input type="submit" name="submit" class="btn btn-primary btn-block mb-4" value="Submit" >
           </form>
+          <p>Already have an account? <a href="/" class="link-info">Login here</a></p>
         </div>
       </div>
     </div>

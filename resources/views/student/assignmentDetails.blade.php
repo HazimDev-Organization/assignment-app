@@ -36,7 +36,7 @@
                                 <td>{{ $count }}</td>
                                 <td>{{ $assignment->teach->lecturer->name }}</td>
                                 <td>{{ $assignment->teach->course->code }}</td>
-                                <td><a href="{{ asset('storage/app/public/' . $assignment->assignmentDetails_file) }}" target="_blank">Download File</a></td>
+                                <td><a href="{{ asset('storage/app/public/' . $assignment->assignmentDetails_file) }}" download>Download File</a></td>
                                 <td>{{ $assignment->dateline }}</td>
                                 <td>{{ $assignment->status }}</td> 
                                     <td>

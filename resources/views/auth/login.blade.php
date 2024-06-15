@@ -70,7 +70,6 @@ height: 100%;
             <input type="submit" name="submit" class="btn btn-info btn-lg btn-block" value="Login" >
             </div>
 
-            <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Forgot password?</a></p>
             <p>Don't have an account? <a href="/signup" class="link-info">Register here</a></p>
 
           </form>
